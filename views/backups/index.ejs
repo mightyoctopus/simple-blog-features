@@ -1,0 +1,98 @@
+<%- include('./partials/header.ejs') %>
+
+<section class="top-section-articles">
+    <% postData.slice(0, 3).forEach((postItem) => { %>
+        <article>
+            <a href="/post-details/<%= postItem.id %>">
+                <img src="<%= postItem.imageUrl %>" alt="<%= postItem.title %>">
+                <h2><%= postItem.title %></h2>
+                <p><%= postItem.content %></p>
+            </a>
+        </article>
+    <% }) %>
+</section>
+
+<br>
+
+<section class="sec-section-articles">
+    <% postData.slice(3, 7).forEach((postItem) => { %>
+        <article>
+            <a href="/post-details/<%= postItem.id %>">
+                <img src="<%= postItem.imageUrl %>" alt="<%= postItem.title %>">
+                <h2><%= postItem.title %></h2>
+                <p><%= postItem.content %></p>
+            </a>
+        </article>
+    <% }) %>
+</section>
+
+<br>
+
+<section class="third-section-articles">
+    <% postData.slice(7, 13).forEach((postItem) => { %>
+        <article>
+            <a href="/post-details/<%= postItem.id %>">
+                <img src="<%= postItem.imageUrl %>" alt="<%= postItem.title %>"> 
+                <h2><%= postItem.title %></h2>
+                <p><%= postItem.content %></p>
+            </a>
+        </article>
+    <% }) %>
+</section>
+
+<br>
+
+<section class="hidden-articles-section" id="hiddenPosts">
+    <% postData.slice(13, 19).forEach((postItem) => { %>
+        <article class="hidden">
+            <a href="/post-details/<%= postItem.id %>">
+                <img src="<%= postItem.imageUrl %>" alt="<%= postItem.title %>">
+                <h2><%= postItem.title %></h2>
+                <p><%= postItem.content %></p>
+            </a>
+        </article>
+    <% }) %>
+</section>
+
+<button onclick="loadMorePosts()">More</button>
+
+<script>
+    let currentPostIndex = 13;
+    const postsPerLoad = 6;
+
+    async function loadMorePosts() {
+        const res = await fetch(`/load-more-posts?start=${currentPostIndex}`);
+        const posts = await res.json();
+
+        const hiddenArticlesSection = document.querySelector('#hiddenPosts');
+
+        posts.forEach(post => {
+            const articleElem = document.createElement('article');
+
+            const linkElem = document.createElement('a');
+            linkElem.href = `/post-details/${post._id}`;
+            // NOTE: _id underscore must be placed before id for the href request 
+            // (like when it's in URL)
+
+            const titleElem = document.createElement('h2');
+            titleElem.textContent = post.title;
+            linkElem.appendChild(titleElem);
+
+            const contentElem = document.createElement('p');
+            contentElem.textContent = post.content;
+            linkElem.appendChild(contentElem);
+
+            articleElem.appendChild(linkElem);
+            hiddenArticlesSection.appendChild(articleElem);
+        });
+
+        currentPostIndex += postsPerLoad;
+
+        // If fewer posts than expected were loaded, hide the "More" button
+        if (posts.length < postsPerLoad) {
+            document.querySelector('button').style.display = 'none';
+        }
+    }
+</script>
+
+<%- include('./partials/footer.ejs') %>

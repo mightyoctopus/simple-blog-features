@@ -1,0 +1,43 @@
+<%- include('./partials/header.ejs') %>
+
+<div class="posting-form d-flex justify-content-center">
+    <div class="col-lg-6 col-md-8 col-sm-10 m-2">
+        <h1 class="text-center mt-4"> Post Article </h1>
+        <form action="/edit/<%= data._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="_method" value="PUT">
+    
+            <div class="d-flex flex-column mt-4">
+                <label>Full Name:</label>
+                <input type="text" name="name" id="name" value="<%= data.name %>">
+    
+                <label style="margin-top: 12px;">Email:</label>
+                <input type="email" name="email" id="email" value="<%= data.email %>">
+    
+                <label style="margin-top: 12px;">Title:</label>
+                <input type="text" name="title" id="title" value="<%= data.title %>">
+    
+                <label style="margin-top: 12px;">Content:</label>
+                <textarea name="content" id="content" style="height: 300px;"><%= data.content %></textarea>
+            </div>
+
+            <div class="mb-4 mt-3 d-flex justify-content-center">
+                <div class="mt-2 flex-column">
+                    <label for="imageUrl">Current Image:</label>
+                    <img src="<%= data.imageUrl %>" class="img" style="width: 45px;" >
+                    <label>New Image:</label>
+                    <input type="file" id="imageUrl" name="imageUrl" class="choose-file-btn">
+                </div>
+                
+                <div>
+                    <input type="submit" value="Update Article" class="mt-2 btn btn-warning">
+                </div>
+            </div>
+            
+        </form>
+
+    </div>
+    
+    
+</div>
+
+<%- include('./partials/footer.ejs') %>

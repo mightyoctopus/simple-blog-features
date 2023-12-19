@@ -1,0 +1,20 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+.clickable-custom {
+    text-decoration: none;
+    color: black;
+}
+
+.clickable-custom:hover {
+    color: #FFCC27;
+    transition: 0.5s;
+}
+
+
+
+

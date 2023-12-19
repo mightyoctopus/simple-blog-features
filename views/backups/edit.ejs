@@ -1,0 +1,25 @@
+<%- include('./partials/header.ejs')%>
+
+<div class="posting-form">
+    <h1> Edit Article </h1>
+    
+    <form action="/edit/<%= data.id %>?_method=PUT" method="POST">
+        <input type="hidden" name="_method" value="PUT">
+        <label>Full Name:</label>
+        <input type="text" name="name" id="name" value="<%= data.name %>" required>
+
+        <label>Email:</label>
+        <input type="email" name="email" id="email" value="<%= data.email %>" required>
+
+        <label>Title:</label>
+        <input type="text" name="title" id="title" value="<%= data.title %>">
+
+        <label>Content:</label>
+        <textarea name="content" id="content" required><%= data.content %></textarea>
+
+        <input type="submit" value="Edit">
+    </form>
+
+</div>
+
+<%- include('./partials/footer.ejs')%>

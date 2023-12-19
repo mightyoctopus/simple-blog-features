@@ -1,0 +1,14 @@
+/* 
+
+@media (max-width: 576px) {
+    .custom-flex-column-img-container {
+        display: block !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .custom-flex-column-img {
+        display: block !important;
+    }
+} */
+

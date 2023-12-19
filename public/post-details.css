@@ -1,0 +1,31 @@
+.post-btn-set {
+    display: inline-flex;
+    
+}
+
+.body-border {
+    min-height: 250px;
+    height: auto;
+}
+
+.edit-btn {
+    background-color: #ffc107;
+    width: 55px;
+    height: 40px;
+    border-radius: 8px;
+    border: none;
+    text-decoration: none;
+    color: black;
+    text-align: center;
+    padding-top: 7px;
+    margin-right: 10px;
+}
+
+.custom-button input[type="submit"] {
+    background-color: #ffc107;
+    width: 55px;
+    height: 40px;
+    border-radius: 8px;
+    border: none;
+}
+

@@ -1,0 +1,26 @@
+<%- include('./partials/header.ejs')%>
+
+<div class="p-3 m-3">
+    <article class="d-flex flex-column">
+        <h1 class="title"> <%= data.title %> </h1>
+        <p class="author-font"> Author: <span style="font-weight: bold;"> <%= data.name %> </span></p>
+        <div class="border body-border">
+            <p class="body-content m-2"> <%= data.content %> </p>
+        </div>
+
+        <div class="post-btn-set mt-3">
+            <a href="/edit/<%= data.id %>" class="edit-btn">Edit</a>
+
+            <form action="/delete/<%= data.id %>?_method=DELETE" method="POST" class="custom-button">
+                <input type="hidden" name="_method" value="DELETE">
+                <input type="submit" name="delete" value="Delete">
+            </form>
+        </div>
+    </article>
+</div>
+
+
+
+<%- include('./partials/footer.ejs')%>
+
+

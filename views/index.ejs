@@ -1,0 +1,150 @@
+<%- include('./partials/header.ejs') %>
+
+<h2 class="text-center mt-5 mb-4">Latest Posts</h2>
+<!-- First Article Section -->
+<section class="container mb-5">
+    <div class="row">
+        <% postData.slice(0, 2).forEach((postItem) => { %>
+            <div class="card col-lg-5 col-md-12 mx-auto mb-2 p-2" style="overflow: hidden;">
+                <a href="/post-details/<%= postItem.id %>" class="clickable-custom">
+                    <img style="object-fit: cover; height: 300px;" class="card-img-top width-100" src="<%= postItem.imageUrl %>" alt="<%= postItem.title %>">
+                    <div class="card-body p-2 text-center">
+                        <h3 class="card-title"><%= postItem.title %></h3>
+                        <p class="card-text font-weight-bold"><%= postItem.content %></p>
+                        <a class="btn btn-warning text-dark mt-2" href="/post-details/<%= postItem.id %>">Read More</a>
+                    </div>
+                </a>
+                
+            </div>
+        <% }) %> 
+    </div>
+</section>
+
+<!-- Second Article Section -->
+<section class="container mb-5">
+    <div class="row">
+        <% postData.slice(2, 5).forEach((postItem) => { %>
+            <div class="card col-lg-4 col-md-12 mx-auto mb-2 p-2" style="overflow: hidden">
+                <a href="/post-details/<%= postItem.id %>" class="clickable-custom">
+                    <img style="object-fit: cover; height: 300px;" class="card-img-top" src="<%= postItem.imageUrl %>" alt="<%= postItem.title %>">
+                    <div class="card-body p-2 text-center">
+                        <h3 class="card-title font-weight-bold"><%= postItem.title %></h3>
+                        <p class="card-text"><%= postItem.content %></p>
+                        <a class="btn btn-warning text-dark mt-2" href="/post-details/<%= postItem.id %>">Read More</a>
+                    </div>
+                </a>
+            </div>
+        <% }) %> 
+    </div>
+</section>
+
+<!-- Third Article Section -->
+<section class="container mb-5">
+    <div class="row">
+        <% postData.slice(5, 9).forEach((postItem) => { %>
+            <div class="card col-lg-3 col-sm-12 mx-auto mb-2 p-2" style="overflow: hidden;">
+                <a href="/post-details/<%= postItem.id %>" class="clickable-custom">
+                    <img style="object-fit: cover; height: 300px;" class="card-img-top" src="<%= postItem.imageUrl %>" alt="<%= postItem.title %>">
+                    <div class="card-body p-2 text-center">
+                        <h3 class="card-title font-weight-bold"><%= postItem.title %></h3>
+                        <p class="card-text"><%= postItem.content %></p>
+                        <a class="btn btn-warning text-dark mt-2" href="/post-details/<%= postItem.id %>">Read More</a>
+                    </div>
+                </a>
+            </div>
+        <% }) %> 
+    </div>
+</section>
+
+
+<!-- Hidden posts -->
+
+<section class="container mb-5" id="hiddenPostSection">
+    <div class="row">
+        <% postData.slice(9, 13).forEach((postItem) => { %>
+            <article class="hidden card col-lg-3 col-md-12 mx-auto mb-2 p-2 d-none" style="overflow: hidden;">
+                <a href="/post-details/<%= postItem.id %>" class="clickable-custom">
+                    <img style="object-fit: cover; height: 300px;" class="card-img-top" src="<%= postItem.imageUrl %>" alt="<%= postItem.title %>">
+                    <div class="card-body p-2 text-center">
+                        <h3 class="card-title font-weight-bold"><%= postItem.title %></h3>
+                        <p class="card-text"><%= postItem.content %></p>
+                        <a class="btn btn-warning text-dark mt-2" href="/post-details/<%= postItem.id %>">Read More</a>
+                    </div>
+                </a>
+            </article>
+        <% }) %> 
+    </div>
+</section>
+
+<div class="d-flex justify-content-center mb-3">
+    <button id="load-more-btn" class="btn btn-dark">More Posts</button>
+</div>
+
+
+<script>
+    let currentPostIndex = 13; 
+    const postsPerLoad = 8;
+    const loadMoreButton = document.querySelector('#load-more-btn');
+
+    function showHiddenPosts() {
+        const hiddenPosts = document.querySelectorAll('.d-none');
+        for (let i = 0; i < postsPerLoad; i++) {
+            if (hiddenPosts[i]) {
+                hiddenPosts[i].classList.remove('d-none');
+            }
+        }
+    }
+
+    async function loadMorePosts () {
+        const response = await fetch(`/load-more-posts?start=${currentPostIndex}`);
+        const posts = await response.json();
+
+        const hiddenPostSection = document.querySelector('#hiddenPostSection');
+        const row = document.createElement('div');
+        row.classList.add('row');
+
+        posts.forEach(post => {
+            const newCard = document.createElement('article');
+            newCard.classList.add('card', 'col-md-3', 'col-sm-12', 'mx-auto', 'mb-2', 'p-2', 'hidden', 'd-none');
+            newCard.innerHTML = `
+                <a href="/post-details/${ post.id }" class="clickable-custom">
+                    <img style="object-fit: cover; height: 300px;" class="card-img-top" src="${ post.imageUrl }" alt="${ post.title }">
+                    <div class="card-body p-2 text-center">
+                        <h3 class="card-title font-weight-bold">${ post.id }</h3>
+                        <p class="card-text">${ post.id }</p>
+                        <a class="btn btn-warning text-dark mt-2" href="/post-details/${ post.id }">Read More</a>
+                    </div>
+                </a>
+            `;     
+            row.appendChild(newCard);   
+        });
+
+       
+        hiddenPostSection.appendChild(row);
+
+        currentPostIndex += postsPerLoad;
+        showHiddenPosts();
+
+        if (posts.length < postsPerLoad) {
+            loadMoreButton.style.display = 'none';
+        }
+    };
+
+    loadMoreButton.addEventListener('click', loadMorePosts);
+
+    window.onload = showHiddenPosts;
+</script>
+
+
+
+
+
+
+
+
+
+<%- include('./partials/footer.ejs')%>
+
+
+
+
